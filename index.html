@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Weekly Timetable</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{--bg:#0a0b14;--surface:#111220;--surface2:#181929;--surface3:#1e2035;--border:rgba(255,255,255,.07);--text:#e8eaf6;--muted:#7b80a0;--accent:#7c6aff;--accent2:#a78bfa;--green:#22c55e;--dsa:#6ee7b7;--dsa-bg:rgba(110,231,183,.10);--skill:#60a5fa;--skill-bg:rgba(96,165,250,.10);--college:#f9a8d4;--college-bg:rgba(249,168,212,.10);--read:#fde68a;--read-bg:rgba(253,230,138,.10);--leisure:#c4b5fd;--leisure-bg:rgba(196,181,253,.10);--routine:#94a3b8;--routine-bg:rgba(148,163,184,.07);--class:#fb923c;--class-bg:rgba(251,146,60,.10);--gym:#34d399;--gym-bg:rgba(52,211,153,.12);--nap:#818cf8;--nap-bg:rgba(129,140,248,.10)}
+    html{scroll-behavior:smooth}body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+    .orbs{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}.orb{position:absolute;border-radius:50%;filter:blur(120px);opacity:.15;animation:floatOrb 18s ease-in-out infinite alternate}.orb1{width:600px;height:600px;background:#7c6aff;top:-150px;left:-100px}.orb2{width:500px;height:500px;background:#06b6d4;bottom:-100px;right:-80px;animation-delay:-7s}.orb3{width:350px;height:350px;background:#ec4899;top:40%;left:60%;animation-delay:-12s}
+    @keyframes floatOrb{0%{transform:translate(0,0) scale(1)}100%{transform:translate(40px,60px) scale(1.08)}}
+    .container{max-width:1200px;margin:0 auto;padding:0 20px;position:relative;z-index:1}
+    header{text-align:center;padding:50px 20px 28px;position:relative;z-index:1}
+    .header-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(124,106,255,.15);border:1px solid rgba(124,106,255,.3);border-radius:100px;padding:6px 18px;font-size:.78rem;color:var(--accent2);font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:20px;animation:fadeDown .6s ease both}
+    header h1{font-family:'Outfit',sans-serif;font-size:clamp(1.9rem,5vw,3.2rem);font-weight:800;line-height:1.15;letter-spacing:-.03em;background:linear-gradient(135deg,#fff 0%,var(--accent2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:fadeDown .6s .1s ease both}
+    header p{color:var(--muted);font-size:1rem;margin-top:12px;max-width:580px;margin-inline:auto;line-height:1.6;animation:fadeDown .6s .2s ease both}
+    @keyframes fadeDown{from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    .week-bar{display:flex;align-items:center;justify-content:center;gap:10px;padding:0 20px 24px;animation:fadeUp .5s .25s ease both}
+    .week-bar label{font-size:.82rem;color:var(--muted);font-weight:600}
+    .week-input{background:var(--surface);border:1px solid var(--border);color:var(--text);border-radius:10px;padding:7px 12px;font-family:inherit;font-size:.82rem;font-weight:600;cursor:pointer;outline:none;transition:border-color .2s}
+    .week-input:focus{border-color:var(--accent)}
+    .week-label-text{font-size:.82rem;color:var(--accent2);font-weight:700;background:rgba(124,106,255,.12);border:1px solid rgba(124,106,255,.25);border-radius:8px;padding:6px 12px}
+    .overall-banner{margin:0 20px 24px;padding:20px 24px;background:var(--surface);border:1px solid var(--border);border-radius:20px;display:flex;gap:20px;align-items:center;flex-wrap:wrap;animation:fadeUp .5s .3s ease both}
+    .overall-ring-wrap{position:relative;width:80px;height:80px;flex-shrink:0}.overall-ring-wrap svg{transform:rotate(-90deg)}
+    .ring-bg{fill:none;stroke:rgba(255,255,255,.07);stroke-width:7}.ring-fill{fill:none;stroke-width:7;stroke-linecap:round;transition:stroke-dashoffset 1s cubic-bezier(.4,0,.2,1)}
+    .ring-pct-label{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'Outfit',sans-serif;font-size:1.1rem;font-weight:800;line-height:1}
+    .ring-pct-sub{font-size:.55rem;color:var(--muted);font-weight:600;margin-top:2px;letter-spacing:.05em;text-transform:uppercase}
+    .overall-info{flex:1;min-width:160px}.overall-info h3{font-family:'Outfit',sans-serif;font-size:1rem;font-weight:700;margin-bottom:6px}.overall-info p{font-size:.8rem;color:var(--muted);line-height:1.5}
+    .day-rings{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-left:auto}.day-mini-ring{display:flex;flex-direction:column;align-items:center;gap:4px}.day-mini-ring span{font-size:.62rem;color:var(--muted);font-weight:600}.day-mini-ring svg{transform:rotate(-90deg)}
+    .top-tabs{display:flex;gap:6px;justify-content:center;padding:0 20px 22px;animation:fadeUp .5s .35s ease both}
+    .top-tab{padding:8px 20px;border-radius:100px;border:1px solid var(--border);background:var(--surface);color:var(--muted);font-size:.82rem;font-weight:600;cursor:pointer;transition:all .2s;font-family:inherit}
+    .top-tab.active{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 4px 16px rgba(124,106,255,.4)}.top-tab:hover:not(.active){border-color:rgba(124,106,255,.4);color:var(--text)}
+    .main-view,.history-view{display:none}.main-view.active,.history-view.active{display:block}
+    .stats-strip{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;padding:0 20px 28px;animation:fadeUp .5s .4s ease both}
+    .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:14px 20px;min-width:120px;text-align:center;transition:transform .25s,box-shadow .25s}
+    .stat-card:hover{transform:translateY(-4px);box-shadow:0 14px 36px rgba(0,0,0,.4)}.stat-icon{font-size:1.4rem;margin-bottom:5px}.stat-val{font-family:'Outfit',sans-serif;font-size:1.4rem;font-weight:800;line-height:1}.stat-label{font-size:.68rem;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:.07em}
+    .s-dsa{border-top:2px solid var(--dsa)}.s-dsa .stat-val{color:var(--dsa)}.s-skill{border-top:2px solid var(--skill)}.s-skill .stat-val{color:var(--skill)}.s-college{border-top:2px solid var(--college)}.s-college .stat-val{color:var(--college)}.s-read{border-top:2px solid var(--read)}.s-read .stat-val{color:var(--read)}.s-leisure{border-top:2px solid var(--leisure)}.s-leisure .stat-val{color:var(--leisure)}
+    .day-nav{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;padding:0 20px 24px}
+    .day-btn{padding:10px 16px 10px 14px;border-radius:100px;border:1px solid var(--border);background:var(--surface);color:var(--muted);font-size:.82rem;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap;font-family:inherit;display:flex;align-items:center;gap:8px}
+    .day-btn:hover{border-color:rgba(124,106,255,.4);color:var(--text)}.day-btn.active{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 4px 20px rgba(124,106,255,.4)}
+    .day-btn-pct{font-size:.68rem;font-weight:800;background:rgba(0,0,0,.25);border-radius:100px;padding:2px 6px;min-width:28px;text-align:center}.day-btn.active .day-btn-pct{background:rgba(255,255,255,.2)}
+    .day-panel{display:none;animation:fadeIn .3s ease}.day-panel.active{display:block}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    .day-header{display:flex;align-items:center;gap:14px;padding:0 20px 18px;flex-wrap:wrap}.day-dot{width:14px;height:14px;border-radius:50%;flex-shrink:0;box-shadow:0 0 12px currentColor}
+    .day-header h2{font-family:'Outfit',sans-serif;font-size:1.6rem;font-weight:800;letter-spacing:-.02em}.day-meta{font-size:.8rem;color:var(--muted);margin-left:auto;text-align:right;line-height:1.5}.day-meta strong{color:var(--text)}
+    .day-prog-wrap{display:flex;align-items:center;gap:10px;padding:0 20px 14px}.day-prog-track{flex:1;height:6px;background:rgba(255,255,255,.07);border-radius:100px;overflow:hidden}.day-prog-fill{height:100%;border-radius:100px;width:0;transition:width .8s cubic-bezier(.4,0,.2,1)}.day-prog-label{font-size:.78rem;font-weight:700;min-width:55px;text-align:right}
+    .schedule{padding:0 20px;display:flex;flex-direction:column;gap:5px}
+    .slot{display:flex;border-radius:12px;overflow:hidden;border:1px solid var(--border);transition:transform .2s,box-shadow .2s,opacity .3s;animation:slideIn .35s ease both;cursor:default}
+    .slot.is-major{cursor:pointer}.slot.is-major:hover{transform:translateX(4px);box-shadow:0 4px 20px rgba(0,0,0,.3)}.slot.is-done{opacity:.55}.slot.is-done .slot-name{text-decoration:line-through;text-decoration-color:rgba(255,255,255,.3)}
+    @keyframes slideIn{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:translateX(0)}}
+    .slot-time{display:flex;align-items:center;justify-content:center;min-width:105px;padding:11px 12px;font-size:.72rem;font-weight:600;color:var(--muted);background:var(--surface);white-space:nowrap;line-height:1.4;text-align:center;flex-shrink:0;border-right:1px solid var(--border)}
+    .slot-body{flex:1;display:flex;align-items:center;gap:10px;padding:11px 14px;background:var(--surface);font-size:.86rem;font-weight:500}.slot-icon{font-size:1.15rem;flex-shrink:0}.slot-name{flex:1;line-height:1.4}.slot-tag{font-size:.65rem;font-weight:700;letter-spacing:.07em;padding:3px 8px;border-radius:100px;white-space:nowrap;text-transform:uppercase}
+    .slot-tick{display:none;flex-shrink:0;width:28px;height:28px;border-radius:50%;border:2px solid rgba(255,255,255,.2);background:transparent;cursor:pointer;align-items:center;justify-content:center;font-size:0;transition:all .2s;position:relative;margin-left:4px}
+    .slot-tick::after{content:'\2713';font-size:.85rem;color:transparent;transition:color .2s}.slot-tick:hover{border-color:var(--green);background:rgba(34,197,94,.1)}.slot-tick:hover::after{color:var(--green)}.slot-tick.ticked{border-color:var(--green);background:rgba(34,197,94,.18)}.slot-tick.ticked::after{color:var(--green)}.is-major .slot-tick{display:flex}
+    .c-routine{background:var(--routine-bg)}.c-routine .slot-tag{background:rgba(148,163,184,.15);color:var(--routine)}.c-class{background:var(--class-bg)}.c-class .slot-tag{background:rgba(251,146,60,.15);color:var(--class)}.c-dsa{background:var(--dsa-bg)}.c-dsa .slot-tag{background:rgba(110,231,183,.15);color:var(--dsa)}.c-skill{background:var(--skill-bg)}.c-skill .slot-tag{background:rgba(96,165,250,.15);color:var(--skill)}.c-college{background:var(--college-bg)}.c-college .slot-tag{background:rgba(249,168,212,.15);color:var(--college)}.c-read{background:var(--read-bg)}.c-read .slot-tag{background:rgba(253,230,138,.15);color:var(--read)}.c-leisure{background:var(--leisure-bg)}.c-leisure .slot-tag{background:rgba(196,181,253,.15);color:var(--leisure)}.c-break{background:rgba(255,255,255,.02)}.c-break .slot-tag{background:rgba(255,255,255,.07);color:var(--muted)}.c-gym{background:var(--gym-bg)}.c-gym .slot-tag{background:rgba(52,211,153,.18);color:var(--gym)}.c-nap{background:var(--nap-bg)}.c-nap .slot-tag{background:rgba(129,140,248,.18);color:var(--nap)}
+    .slot.c-dsa{border-left:3px solid var(--dsa)}.slot.c-skill{border-left:3px solid var(--skill)}.slot.c-college{border-left:3px solid var(--college)}.slot.c-read{border-left:3px solid var(--read)}.slot.c-leisure{border-left:3px solid var(--leisure)}.slot.c-class{border-left:3px solid var(--class)}.slot.c-routine{border-left:3px solid var(--routine)}.slot.c-break{border-left:3px solid rgba(100,116,139,.4)}.slot.c-gym{border-left:3px solid var(--gym)}.slot.c-nap{border-left:3px solid var(--nap)}
+    .slot.is-done{background:transparent!important}.slot.is-done .slot-body,.slot.is-done .slot-time{background:transparent}
+    .day-summary{display:flex;gap:8px;flex-wrap:wrap;padding:16px 20px 8px}.ds-chip{display:flex;align-items:center;gap:6px;background:var(--surface2);border:1px solid var(--border);border-radius:100px;padding:5px 12px;font-size:.75rem;font-weight:600;color:var(--muted)}.ds-chip .dot{width:7px;height:7px;border-radius:50%}
+    .opt-banner{background:linear-gradient(135deg,rgba(124,106,255,.10),rgba(6,182,212,.07));border:1px solid rgba(124,106,255,.22);border-radius:18px;padding:20px 24px;margin:0 20px 28px;position:relative;z-index:1}
+    .opt-banner h3{font-family:'Outfit',sans-serif;font-size:1rem;font-weight:700;color:var(--accent2);margin-bottom:12px;display:flex;align-items:center;gap:8px}.opt-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px}.opt-item{display:flex;gap:8px;align-items:flex-start;font-size:.82rem;color:var(--muted);line-height:1.5}.opt-item strong{color:var(--text)}
+    .prog-section{padding:0 20px 36px}.prog-title{font-family:'Outfit',sans-serif;font-size:1.2rem;font-weight:700;margin-bottom:18px}.prog-row{display:flex;align-items:center;gap:12px;margin-bottom:12px}.prog-label{font-size:.82rem;font-weight:600;min-width:160px;display:flex;align-items:center;gap:6px}.prog-track{flex:1;height:7px;border-radius:100px;background:rgba(255,255,255,.07);overflow:hidden}.prog-fill{height:100%;border-radius:100px;width:0;transition:width 1.2s cubic-bezier(.4,0,.2,1)}.prog-val{font-size:.8rem;color:var(--muted);min-width:55px;text-align:right}
+    .opt-section{padding:0 20px 50px;position:relative;z-index:1}.opt-section h3{font-family:'Outfit',sans-serif;font-size:1.2rem;font-weight:700;margin-bottom:18px}.tips-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}.tip-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px;transition:transform .2s,box-shadow .2s}.tip-card:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,.3)}.tip-card h4{font-size:.88rem;font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:7px}.tip-card p{font-size:.8rem;color:var(--muted);line-height:1.6}
+    .history-view{padding:0 20px 60px}.history-view h2{font-family:'Outfit',sans-serif;font-size:1.4rem;font-weight:800;margin-bottom:6px}.history-view>p{font-size:.82rem;color:var(--muted);margin-bottom:24px}
+    .history-week{background:var(--surface);border:1px solid var(--border);border-radius:16px;margin-bottom:14px;overflow:hidden}.history-week-header{display:flex;align-items:center;gap:14px;padding:16px 20px;cursor:pointer;transition:background .2s}.history-week-header:hover{background:rgba(255,255,255,.03)}.hw-label{font-weight:700;font-size:.9rem;flex:1}.hw-pct{font-family:'Outfit',sans-serif;font-size:1.1rem;font-weight:800}.hw-chevron{color:var(--muted);transition:transform .3s;font-size:.8rem}.history-week.open .hw-chevron{transform:rotate(180deg)}.history-week-body{display:none;padding:0 20px 16px}.history-week.open .history-week-body{display:block}.hw-day-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}.hw-day-name{font-size:.8rem;font-weight:600;min-width:80px}.hw-day-track{flex:1;height:6px;background:rgba(255,255,255,.07);border-radius:100px;overflow:hidden}.hw-day-fill{height:100%;border-radius:100px}.hw-day-val{font-size:.72rem;color:var(--muted);min-width:32px;text-align:right}.hw-day-pct{font-size:.75rem;min-width:36px;text-align:right}.no-history{text-align:center;padding:60px 20px;color:var(--muted);font-size:.9rem}.no-history span{font-size:2.5rem;display:block;margin-bottom:12px}
+    .legend{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;padding:8px 20px 50px}.legend-item{display:flex;align-items:center;gap:5px;font-size:.76rem;color:var(--muted)}.legend-dot{width:9px;height:9px;border-radius:50%}
+    .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--surface3);border:1px solid var(--border);border-radius:100px;padding:10px 22px;font-size:.82rem;font-weight:600;color:var(--text);box-shadow:0 8px 32px rgba(0,0,0,.4);z-index:999;transition:transform .35s cubic-bezier(.34,1.56,.64,1),opacity .35s;opacity:0;white-space:nowrap;pointer-events:none}.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+    @media(max-width:600px){.slot-time{min-width:80px;font-size:.68rem}.slot-tag{display:none}header h1{font-size:1.8rem}.day-rings{display:none}}
+  
+    /* ── STREAK CARD */
+    .streak-card{display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--surface2);border:1px solid var(--border);border-radius:16px;padding:14px 20px;min-width:110px;text-align:center;transition:border-color .3s,transform .2s;flex-shrink:0;cursor:default}
+    .streak-card:hover{transform:translateY(-2px)}
+    .streak-icon{font-size:1.8rem;line-height:1;margin-bottom:4px}
+    .streak-num{font-family:'Outfit',sans-serif;font-size:1.8rem;font-weight:800;line-height:1;color:var(--accent2)}
+    .streak-sub{font-size:.65rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-top:4px}
+    /* ── ENERGY ROW */
+    .energy-row{display:flex;align-items:center;gap:10px;padding:0 20px 12px;flex-wrap:wrap}
+    .erg-title{font-size:.78rem;font-weight:600;color:var(--muted)}
+    .erg-bolts{display:flex;gap:4px}
+    .e-btn{background:none;border:none;font-size:1rem;cursor:pointer;opacity:.25;transition:opacity .15s,transform .15s;padding:2px}
+    .e-btn:hover{opacity:.7;transform:scale(1.2)}
+    .e-btn.lit{opacity:1}
+    .erg-label{font-size:.8rem;font-weight:600;min-width:70px}
+    /* ── REASON MODAL */
+    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);z-index:900;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s}
+    .modal-overlay.open{opacity:1;pointer-events:all}
+    .modal-box{background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:28px;width:min(92vw,420px);transform:translateY(20px) scale(.96);transition:transform .25s cubic-bezier(.34,1.56,.64,1)}
+    .modal-overlay.open .modal-box{transform:translateY(0) scale(1)}
+    .modal-title{font-family:'Outfit',sans-serif;font-size:1.1rem;font-weight:800;margin-bottom:6px}
+    .modal-sub{font-size:.82rem;color:var(--muted);margin-bottom:20px}
+    .reason-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}
+    .reason-btn{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:14px 12px;cursor:pointer;font-family:inherit;font-size:.85rem;font-weight:600;color:var(--text);transition:all .2s;text-align:center;line-height:1.4}
+    .reason-btn:hover{border-color:var(--accent);background:rgba(124,106,255,.12);transform:translateY(-2px)}
+    .reason-btn span{display:block;font-size:1.4rem;margin-bottom:6px}
+    .reason-skip{background:none;border:none;color:var(--muted);font-size:.8rem;cursor:pointer;font-family:inherit;display:block;margin:0 auto;padding:6px 16px;border-radius:100px;transition:color .2s}
+    .reason-skip:hover{color:var(--text)}
+    /* ── REASON BADGE ON SLOT */
+    .slot-reason-badge{font-size:.62rem;font-weight:700;padding:2px 8px;border-radius:100px;background:rgba(248,113,113,.12);border:1px solid rgba(248,113,113,.25);color:#f87171;white-space:nowrap;flex-shrink:0}
+    /* ── EXPORT MODAL */
+    .export-modal .modal-box{width:min(92vw,480px)}
+    .xc-head{text-align:center;margin-bottom:18px}
+    .xc-title{font-family:'Outfit',sans-serif;font-size:1.2rem;font-weight:800}
+    .xc-sub{font-size:.8rem;color:var(--muted);margin-top:4px}
+    .xc-main{text-align:center;margin-bottom:18px}
+    .xc-pct{font-family:'Outfit',sans-serif;font-size:3rem;font-weight:800;line-height:1}
+    .xc-pct-label{font-size:.82rem;color:var(--muted);margin-top:6px}
+    .xc-stats{display:flex;justify-content:center;gap:24px;margin-bottom:18px}
+    .xc-stat{text-align:center}.xc-sv{font-family:'Outfit',sans-serif;font-size:1.1rem;font-weight:700}.xc-sl{font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:3px}
+    .xc-days{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:16px}
+    .xc-day{text-align:center}.xc-dn{font-size:.7rem;color:var(--muted);font-weight:600;margin-bottom:2px}.xc-dp{font-family:'Outfit',sans-serif;font-size:.88rem;font-weight:700}
+    .xc-footer{text-align:center;font-size:.7rem;color:var(--muted);padding-top:12px;border-top:1px solid var(--border)}
+    .export-btns{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+    .export-btn{flex:1;padding:11px;border-radius:12px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-family:inherit;font-size:.84rem;font-weight:600;cursor:pointer;transition:all .2s;text-align:center}
+    .export-btn:hover{border-color:var(--accent);background:rgba(124,106,255,.12)}
+    .export-btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+    .export-btn.primary:hover{background:#6b5ce7}
+    /* ── ANALYTICS TAB */
+    .analytics-view{display:none;padding:0 20px 60px}
+    .analytics-view.active{display:block}
+    .ana-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-bottom:28px}
+    .ana-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:22px}
+    .ana-card h3{font-family:'Outfit',sans-serif;font-size:1rem;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+    .ana-stat-row{display:flex;gap:20px;flex-wrap:wrap}
+    .ana-stat{text-align:center}
+    .ana-sv{font-family:'Outfit',sans-serif;font-size:1.6rem;font-weight:800;color:var(--accent2)}
+    .ana-sl{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:3px}
+    .an-week{display:flex;flex-direction:column;gap:6px;flex:1}
+    .an-wlabel{font-size:.68rem;color:var(--muted);font-weight:600;text-align:center}
+    .an-bars{display:flex;gap:3px;align-items:flex-end;height:90px}
+    .an-bwrap{display:flex;flex-direction:column;align-items:center;gap:3px;flex:1}
+    .an-bar{border-radius:4px 4px 0 0;width:100%;transition:height .6s cubic-bezier(.4,0,.2,1);min-height:4px}
+    .an-bl{font-size:.6rem;color:var(--muted);font-weight:600}
+    #echart{display:flex;gap:12px}
+    .mr-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}.mr-label{font-size:.83rem;font-weight:600;min-width:100px}.mr-track{flex:1;height:7px;background:rgba(255,255,255,.07);border-radius:100px;overflow:hidden}.mr-fill{height:100%;border-radius:100px;background:var(--accent);transition:width .8s cubic-bezier(.4,0,.2,1)}.mr-val{font-size:.76rem;color:var(--muted);min-width:72px;text-align:right}
+    .no-data{text-align:center;color:var(--muted);font-size:.85rem;padding:20px}
+    /* ── EXPORT FLOAT BTN */
+    .fab{position:fixed;bottom:32px;right:28px;background:var(--accent);border:none;border-radius:100px;padding:12px 20px;font-family:inherit;font-size:.82rem;font-weight:700;color:#fff;cursor:pointer;box-shadow:0 4px 20px rgba(124,106,255,.5);z-index:80;transition:all .25s;display:flex;align-items:center;gap:8px}
+    .fab:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(124,106,255,.6)}
+    @media print{.orbs,.day-nav,.top-tabs,.stats-strip,.opt-banner,.opt-section,.legend,.fab,.toast,.modal-overlay,header>p,header>.header-badge{display:none!important}.overall-banner,.schedule,.day-panel{display:block!important}.day-panel:not(.active){display:none!important}#exportCard{border:2px solid #ddd;border-radius:12px;padding:20px;color:#111;background:#fff!important}#exportCard .xc-footer,.xc-dn,.xc-sl{color:#666!important}}    /* ── PARTNER MODAL */
+    .pm-tabs{display:flex;gap:6px;margin-bottom:16px}
+    .pm-tab{flex:1;padding:9px;border-radius:10px;border:1px solid var(--border);background:var(--surface2);color:var(--muted);font-family:inherit;font-size:.82rem;font-weight:700;cursor:pointer;transition:all .2s;text-align:center}
+    .pm-tab.active{color:#fff}
+    .pm-tab.wa.active{background:#25d366;border-color:#25d366;box-shadow:0 4px 16px rgba(37,211,102,.35)}
+    .pm-tab.dc.active{background:#5865f2;border-color:#5865f2;box-shadow:0 4px 16px rgba(88,101,242,.35)}
+    .pm-pane{display:none}.pm-pane.active{display:block}
+    .pm-preview{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:16px;font-size:.77rem;line-height:1.65;color:var(--muted);white-space:pre-wrap;word-break:break-word;max-height:260px;overflow-y:auto;margin-bottom:14px;font-family:'Courier New',monospace;user-select:all}
+    .pm-btns{display:flex;gap:8px;flex-wrap:wrap}
+    .pm-btn{flex:1;padding:10px 12px;border-radius:10px;border:none;font-family:inherit;font-size:.82rem;font-weight:700;cursor:pointer;transition:all .2s;text-align:center}
+    .pm-btn.wa-open{background:#25d366;color:#fff}.pm-btn.wa-open:hover{background:#1ebe5a;transform:translateY(-1px)}
+    .pm-btn.wa-copy{background:rgba(37,211,102,.12);color:#25d366;border:1px solid rgba(37,211,102,.3)}.pm-btn.wa-copy:hover{background:rgba(37,211,102,.22)}
+    .pm-btn.dc-copy{background:#5865f2;color:#fff}.pm-btn.dc-copy:hover{background:#4752c4;transform:translateY(-1px)}
+    .pm-btn.dc-copy2{background:rgba(88,101,242,.12);color:#7289da;border:1px solid rgba(88,101,242,.3)}.pm-btn.dc-copy2:hover{background:rgba(88,101,242,.22)}
+    .pm-tip{font-size:.72rem;color:var(--muted);text-align:center;margin-top:10px;line-height:1.5}
+    .fab-group{position:fixed;bottom:28px;right:24px;display:flex;flex-direction:column;align-items:flex-end;gap:10px;z-index:80}
+    .fab{position:static!important;box-shadow:0 4px 20px rgba(124,106,255,.45)}
+    .fab2{background:linear-gradient(135deg,#25d366,#128c7e);box-shadow:0 4px 20px rgba(37,211,102,.45)}
+    .fab2:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(37,211,102,.55)}    /* FOCUS BUTTON ON SLOTS */
+    .focus-btn{display:none;flex-shrink:0;padding:3px 9px;border-radius:100px;border:1px solid rgba(124,106,255,.35);background:rgba(124,106,255,.12);color:var(--accent2);font-size:.7rem;font-weight:700;cursor:pointer;transition:all .2s;margin-left:4px}
+    .is-major .focus-btn{display:inline-flex;align-items:center;gap:3px}
+    .focus-btn:hover{background:var(--accent);border-color:var(--accent);color:#fff;transform:scale(1.05)}
+    /* TIMER MODAL */
+    .tmr-display{font-family:'Outfit',sans-serif;font-size:3.5rem;font-weight:800;text-align:center;letter-spacing:.05em;color:var(--accent2);padding:18px 0 10px;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .tmr-name{text-align:center;font-size:.9rem;color:var(--muted);font-weight:600;margin-bottom:14px}
+    .tmr-dur-row{display:flex;gap:8px;justify-content:center;margin-bottom:14px;flex-wrap:wrap}
+    .tm-dur-btn{padding:9px 18px;border-radius:100px;border:1px solid var(--border);background:var(--surface2);color:var(--muted);font-family:inherit;font-weight:700;font-size:.83rem;cursor:pointer;transition:all .2s}
+    .tm-dur-btn:hover,.tm-dur-btn.active{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 4px 14px rgba(124,106,255,.4)}
+    .tmr-custom-row{display:flex;gap:8px;justify-content:center;margin-bottom:16px}
+    .tmr-custom-row input{width:80px;padding:8px 12px;background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:10px;font-family:inherit;font-size:.85rem;text-align:center;outline:none}
+    .tmr-custom-row input:focus{border-color:var(--accent)}
+    .tmr-status{text-align:center;font-size:.83rem;color:var(--muted);margin-bottom:14px;min-height:20px}
+    .tmr-stop-btn{display:block;width:100%;padding:11px;border-radius:12px;background:rgba(248,113,113,.15);border:1px solid rgba(248,113,113,.3);color:#f87171;font-family:inherit;font-weight:700;font-size:.9rem;cursor:pointer;transition:all .2s;margin-bottom:6px}
+    .tmr-stop-btn:hover:not(:disabled){background:rgba(248,113,113,.28)}
+    .tmr-stop-btn:disabled{opacity:.35;cursor:not-allowed}
+    /* PLANNED VS ACTUAL */
+    .pva-table{width:100%;border-collapse:collapse;font-size:.84rem}
+    .pva-table th{color:var(--muted);font-weight:600;font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;padding:6px 10px;text-align:left;border-bottom:1px solid var(--border)}
+    .pva-table td{padding:10px;border-bottom:1px solid rgba(255,255,255,.04)}
+    .pva-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px}
+    .pva-bar-wrap{height:5px;background:rgba(255,255,255,.07);border-radius:100px;overflow:hidden;width:80px;display:inline-block;vertical-align:middle;margin-right:6px}
+    .pva-bar{height:100%;border-radius:100px;transition:width .8s ease}
+    .pva-empty{text-align:center;color:var(--muted);padding:28px;font-size:.85rem;line-height:1.6}
+    /* HEATMAP */
+    .hm-outer{overflow-x:auto;padding-bottom:8px}
+    .hm-wrap{display:flex;gap:6px;min-width:0}
+    .hm-day-labels{display:flex;flex-direction:column;gap:3px;padding-top:18px;flex-shrink:0}
+    .hm-day-labels span{font-size:.62rem;color:var(--muted);font-weight:600;height:14px;display:flex;align-items:center;line-height:1}
+    .hm-months{display:flex;gap:3px;margin-bottom:4px;padding-left:28px}
+    .hm-month-cell{width:14px;font-size:.62rem;color:var(--muted);font-weight:600;white-space:nowrap;flex-shrink:0}
+    .hm-col{display:flex;flex-direction:column;gap:3px}
+    .hm-cell{width:14px;height:14px;border-radius:3px;cursor:default;transition:transform .1s}
+    .hm-cell:hover{transform:scale(1.5);z-index:2;position:relative}
+    .hm-cell[data-lvl="0"]{background:rgba(255,255,255,.06)}
+    .hm-cell[data-lvl="1"]{background:#1e3a5f}
+    .hm-cell[data-lvl="2"]{background:#1d4ed8}
+    .hm-cell[data-lvl="3"]{background:#3b82f6}
+    .hm-cell[data-lvl="4"]{background:#6ee7b7}
+    .hm-cell.perfect{background:#f59e0b!important;box-shadow:0 0 6px rgba(245,158,11,.5)}
+    .hm-legend{display:flex;align-items:center;gap:4px;font-size:.68rem;color:var(--muted);margin-top:10px}
+    .hm-legend .hm-cell{cursor:default}
+    .hm-legend .hm-cell:hover{transform:none}
+    .hm-stats{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:20px}
+    .hm-stat{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:12px 18px;text-align:center;min-width:100px}
+    .hm-stat-val{font-family:'Outfit',sans-serif;font-size:1.3rem;font-weight:800;color:var(--accent2)}
+    .hm-stat-label{font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:3px}
+    /* ACHIEVEMENTS */
+    .ach-progress-wrap{margin-bottom:20px}
+    .ach-prog-track{height:7px;background:rgba(255,255,255,.07);border-radius:100px;overflow:hidden;margin-top:8px}
+    .ach-prog-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width 1s ease}
+    .ach-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
+    .ach-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:18px;text-align:center;transition:transform .2s,box-shadow .2s}
+    .ach-card.earned{cursor:default}.ach-card.earned:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(0,0,0,.3)}
+    .ach-card.locked{opacity:.45;filter:grayscale(.6)}
+    .ach-icon{font-size:2rem;margin-bottom:8px}
+    .ach-name{font-weight:800;font-size:.88rem;margin-bottom:4px}
+    .ach-desc{font-size:.72rem;color:var(--muted);line-height:1.4;margin-bottom:6px}
+    .ach-rarity{font-size:.6rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;border-radius:100px;display:inline-block}
+    .ach-rarity.common{background:rgba(167,139,250,.15);color:#a78bfa}
+    .ach-rarity.rare{background:rgba(96,165,250,.15);color:#60a5fa}
+    .ach-rarity.epic{background:rgba(250,204,21,.15);color:#facc15}
+    .ach-date{font-size:.67rem;color:var(--green);margin-top:5px;font-weight:600}
+    /* ACHIEVEMENT TOAST */
+    .ach-toast{position:fixed;top:24px;right:24px;background:var(--surface);border:1px solid rgba(250,204,21,.5);border-radius:16px;padding:14px 18px;display:flex;align-items:center;gap:12px;box-shadow:0 8px 32px rgba(0,0,0,.5),0 0 20px rgba(250,204,21,.2);z-index:998;transform:translateX(120%);opacity:0;transition:transform .4s cubic-bezier(.34,1.56,.64,1),opacity .4s;max-width:300px}
+    .ach-toast.show{transform:translateX(0);opacity:1}
+    /* PLANNER TAB */
+    .planner-view{display:none;padding:0 20px 60px}.planner-view.active{display:block}
+    .planner-section{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:22px;margin-bottom:18px}
+    .planner-section h3{font-family:'Outfit',sans-serif;font-size:1.05rem;font-weight:800;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+    .ada-header{display:flex;justify-content:space-between;align-items:center;font-size:.82rem;color:var(--muted);margin-bottom:14px;flex-wrap:wrap;gap:8px}
+    .ada-card{border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:10px}
+    .ada-card.ada-maintain{border-color:rgba(34,197,94,.25);background:rgba(34,197,94,.06)}
+    .ada-card.ada-tweak{border-color:rgba(250,204,21,.25);background:rgba(250,204,21,.05)}
+    .ada-card.ada-adjust{border-color:rgba(251,146,60,.25);background:rgba(251,146,60,.05)}
+    .ada-card.ada-reduce{border-color:rgba(248,113,113,.25);background:rgba(248,113,113,.05)}
+    .ada-card-top{display:flex;align-items:center;gap:12px;margin-bottom:6px;flex-wrap:wrap}
+    .ada-badge{font-size:.68rem;font-weight:700;padding:3px 9px;border-radius:100px;background:rgba(255,255,255,.08)}
+    .ada-advice{font-size:.82rem;color:var(--muted);line-height:1.5}
+    .ada-tip{font-size:.78rem;color:var(--accent2);margin-top:6px;background:rgba(167,139,250,.08);border-radius:8px;padding:7px 10px}
+    .ada-empty{text-align:center;color:var(--muted);padding:32px;font-size:.88rem;line-height:1.7}
+    .ada-note{font-size:.75rem;color:var(--muted);text-align:center;padding-top:10px;border-top:1px solid var(--border);margin-top:14px}
+    /* WHAT-IF */
+    .wi-row{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+    .wi-label{font-size:.82rem;font-weight:600;min-width:120px}
+    .wi-range{flex:1;height:4px;cursor:pointer}
+    .wi-val{font-size:.82rem;font-weight:700;min-width:32px;text-align:right}
+    .wi-impact{background:var(--surface2);border-radius:12px;padding:14px;margin-top:14px;font-size:.83rem;line-height:1.6}
+    .wi-impact-title{font-weight:800;margin-bottom:8px}
+    .wi-impact-title.over{color:#f87171}.wi-impact-title.ok{color:var(--green)}
+    .wi-delta{padding:2px 0}.wi-nochange{color:var(--muted)}.wi-total-delta{margin-top:8px;font-weight:700;padding-top:8px;border-top:1px solid var(--border)}
+    .wi-reset-btn{background:none;border:1px solid var(--border);border-radius:10px;padding:7px 16px;color:var(--muted);font-family:inherit;font-size:.8rem;font-weight:600;cursor:pointer;transition:all .2s;margin-top:12px}
+    .wi-reset-btn:hover{border-color:var(--accent);color:var(--text)}
+    /* EXAM MODE */
+    .exam-toggle-btn{padding:8px 16px;border-radius:100px;border:1px solid var(--border);background:var(--surface);color:var(--muted);font-family:inherit;font-size:.78rem;font-weight:700;cursor:pointer;transition:all .25s;white-space:nowrap}
+    .exam-toggle-btn.exam-on{background:rgba(251,146,60,.2);border-color:rgba(251,146,60,.6);color:#fb923c;animation:examPulse 2s ease infinite}
+    @keyframes examPulse{0%,100%{box-shadow:0 0 0 0 rgba(251,146,60,.3)}50%{box-shadow:0 0 0 6px rgba(251,146,60,0)}}
+    .exam-banner{display:none;align-items:center;gap:12px;background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.3);border-radius:14px;padding:12px 18px;margin:0 20px 18px;font-size:.83rem;line-height:1.5}
+    .exam-banner strong{color:#fb923c}
+    /* ASSIGNMENTS */
+    .asg-form{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}
+    .asg-form input,.asg-form select{background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:10px;padding:9px 12px;font-family:inherit;font-size:.83rem;outline:none;transition:border-color .2s}
+    .asg-form input:focus,.asg-form select:focus{border-color:var(--accent)}
+    .asg-form input::placeholder{color:var(--muted)}
+    .asg-add-btn{grid-column:1/-1;padding:11px;border-radius:12px;background:var(--accent);border:none;color:#fff;font-family:inherit;font-weight:700;font-size:.9rem;cursor:pointer;transition:all .2s}
+    .asg-add-btn:hover{background:#6b5ce7;transform:translateY(-1px)}
+    .asg-summary{display:flex;gap:16px;font-size:.8rem;font-weight:600;margin-bottom:14px;flex-wrap:wrap}
+    .asg-card{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:15px;margin-bottom:10px;transition:border-color .2s}
+    .asg-card.asg-overdue{border-color:rgba(248,113,113,.4);background:rgba(248,113,113,.05)}
+    .asg-card.asg-urgent{border-color:rgba(251,146,60,.4);background:rgba(251,146,60,.04)}
+    .asg-card.asg-done{opacity:.6}
+    .asg-row1{display:flex;align-items:center;gap:10px;margin-bottom:5px;flex-wrap:wrap}
+    .asg-title{font-weight:700;font-size:.9rem;flex:1}
+    .asg-due{font-size:.75rem;font-weight:600;white-space:nowrap}
+    .asg-del{background:none;border:none;color:var(--muted);cursor:pointer;font-size:.9rem;padding:2px 6px;border-radius:6px;transition:color .2s}
+    .asg-del:hover{color:#f87171}
+    .asg-subject{font-size:.74rem;color:var(--muted);margin-bottom:8px}
+    .asg-prog-row{display:flex;align-items:center;gap:10px}
+    .asg-slider{flex:1;cursor:pointer}
+    .asg-pct{font-size:.78rem;font-weight:800;min-width:36px;text-align:right}
+    .no-asg{text-align:center;color:var(--muted);padding:28px;font-size:.88rem}
+    /* SEMESTER MINI */
+    .sem-grid{display:grid;grid-template-columns:repeat(16,1fr);gap:3px;margin-top:12px}
+    .sem-cell{width:100%;aspect-ratio:1;border-radius:2px}
+    .sem-cell[data-lvl="0"]{background:rgba(255,255,255,.06)}
+    .sem-cell[data-lvl="1"]{background:#1e3a5f}
+    .sem-cell[data-lvl="2"]{background:#1d4ed8}
+    .sem-cell[data-lvl="3"]{background:#3b82f6}
+    .sem-cell[data-lvl="4"]{background:#6ee7b7}
+    /* WORKLOAD WARN */
+    .workload-warn{display:none;align-items:center;gap:10px;border-radius:12px;padding:10px 16px;margin:0 20px 16px;font-size:.82rem}
+    .workload-warn.danger{background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.3)}
+    .workload-warn.caution{background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.3)}
+    /* VIEWS */
+    .heatmap-view,.achievements-view,.assignments-view{display:none;padding:0 20px 60px}
+    .heatmap-view.active,.achievements-view.active,.assignments-view.active{display:block}
+    .view-title{font-family:'Outfit',sans-serif;font-size:1.4rem;font-weight:800;margin-bottom:6px}
+    .view-sub{font-size:.82rem;color:var(--muted);margin-bottom:24px}</style>
+</head>
+<body>
+<div class="orbs"><div class="orb orb1"></div><div class="orb orb2"></div><div class="orb orb3"></div></div>
+<header>
+  <div class="header-badge">&#9889; Optimized 2026 Schedule</div>
+  <h1>Your Weekly Timetable</h1>
+  <p>Track your daily tasks, monitor completion, and review your progress week by week.</p>
+</header>
+<div class="week-bar">
+  <label for="weekPicker">&#128197; Week of:</label>
+  <input type="week" id="weekPicker" class="week-input"/>
+  <button class="exam-toggle-btn" id="examToggle" onclick="toggleExamMode()">🎓 Normal Mode</button><div class="week-label-text" id="weekLabelText">&#8212;</div>
+</div>
+<div class="container">
+  <div class="overall-banner">
+    <div class="overall-ring-wrap">
+      <svg width="80" height="80" viewBox="0 0 80 80">
+        <circle class="ring-bg" cx="40" cy="40" r="33"/>
+        <circle class="ring-fill" id="overallRingFill" cx="40" cy="40" r="33" stroke="url(#ringGrad)" stroke-dasharray="207.3" stroke-dashoffset="207.3"/>
+        <defs><linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#7c6aff"/><stop offset="100%" stop-color="#6ee7b7"/></linearGradient></defs>
+      </svg>
+      <div class="ring-pct-label">
+        <span id="overallPctNum" style="background:linear-gradient(135deg,#7c6aff,#6ee7b7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">0%</span>
+        <span class="ring-pct-sub">Done</span>
+      </div>
+    </div>
+    <div class="overall-info"><h3>This Week's Completion</h3><p id="overallDesc">Tap the &#10003; circle on any DSA, Skill Dev, College Work or Reading block to track it. Data is saved permanently.</p></div>
+        <div class="streak-card" id="streakCard">
+      <div class="streak-icon" id="streakIcon">💤</div>
+      <div class="streak-num" id="streakNum">0</div>
+      <div class="streak-sub" id="streakSub">Start your streak!</div>
+    </div><div class="day-rings" id="dayRings"></div>
+  </div>
+</div>
+<div class="workload-warn" id="workloadWarn"><span id="workloadWarnText"></span></div><div class="exam-banner" id="examBanner"><strong>📚 EXAM MODE ACTIVE</strong> — College Work &amp; Revision are top priority. DSA/Skill Dev reduced to 30-min maintenance sessions. Remove distraction apps and block social media.</div><div class="top-tabs">
+  <button class="top-tab active" id="tab-schedule" onclick="switchTab('schedule')">&#128197; Schedule</button>
+  <button class="top-tab" id="tab-heatmap" onclick="switchTab('heatmap')">🔥 Heatmap</button><button class="top-tab" id="tab-achievements" onclick="switchTab('achievements')">🏆 Achievements</button><button class="top-tab" id="tab-planner" onclick="switchTab('planner')">📋 Planner</button><button class="top-tab" id="tab-assignments" onclick="switchTab('assignments')">📝 Assignments</button><button class="top-tab" id="tab-analytics" onclick="switchTab('analytics')">📈 Analytics</button>
+  <button class="top-tab" id="tab-history" onclick="switchTab('history')">&#128202; History</button>
+</div>
+<div class="main-view active" id="view-schedule">
+  <div class="stats-strip">
+    <div class="stat-card s-dsa"><div class="stat-icon">&#129329;</div><div class="stat-val" data-target="11">0</div><div class="stat-label">DSA hrs/wk</div></div>
+    <div class="stat-card s-skill"><div class="stat-icon">&#128187;</div><div class="stat-val" data-target="9">0</div><div class="stat-label">Skill Dev hrs/wk</div></div>
+    <div class="stat-card s-college"><div class="stat-icon">&#128216;</div><div class="stat-val" data-target="7">0</div><div class="stat-label">College hrs/wk</div></div>
+    <div class="stat-card s-read"><div class="stat-icon">&#128214;</div><div class="stat-val" data-target="2">0</div><div class="stat-label">Reading hrs/wk</div></div>
+    <div class="stat-card s-leisure"><div class="stat-icon">&#127918;</div><div class="stat-val" data-target="12">0</div><div class="stat-label">Leisure hrs/wk</div></div>
+  </div>
+  <div class="container"><div class="opt-banner"><h3>&#10024; Optimization Applied</h3><div class="opt-grid"><div class="opt-item"><span>&#128267;</span><div><strong>Energy mapping:</strong> Hard tasks during peak alertness windows.</div></div><div class="opt-item"><span>&#128279;</span><div><strong>Fewer micro-breaks:</strong> Tiny gaps merged into meaningful buffers.</div></div><div class="opt-item"><span>&#129504;</span><div><strong>No back-to-back intensity:</strong> DSA and Skill Dev always interleaved.</div></div><div class="opt-item"><span>&#127769;</span><div><strong>Sleep honoured:</strong> No schedule bleeds into sleep time.</div></div><div class="opt-item"><span>&#128197;</span><div><strong>Sun = recovery + prep:</strong> Week planning so Monday starts fresh.</div></div><div class="opt-item"><span>&#127919;</span><div><strong>Placement-first:</strong> DSA + Skill Dev = ~50% of free time.</div></div></div></div></div>
+  <div class="day-nav">
+    <button class="day-btn active" onclick="showDay('mon')" id="btn-mon">&#128246; Mon <span class="day-btn-pct" id="pct-mon">&#8211;</span></button>
+    <button class="day-btn" onclick="showDay('tue')" id="btn-tue">&#128250; Tue <span class="day-btn-pct" id="pct-tue">&#8211;</span></button>
+    <button class="day-btn" onclick="showDay('wed')" id="btn-wed">&#128249; Wed <span class="day-btn-pct" id="pct-wed">&#8211;</span></button>
+    <button class="day-btn" onclick="showDay('thu')" id="btn-thu">&#128248; Thu <span class="day-btn-pct" id="pct-thu">&#8211;</span></button>
+    <button class="day-btn" onclick="showDay('fri')" id="btn-fri">&#128247; Fri <span class="day-btn-pct" id="pct-fri">&#8211;</span></button>
+    <button class="day-btn" onclick="showDay('sat')" id="btn-sat">&#128251; Sat <span class="day-btn-pct" id="pct-sat">&#8211;</span></button>
+    <button class="day-btn" onclick="showDay('sun')" id="btn-sun">&#128252; Sun <span class="day-btn-pct" id="pct-sun">&#8211;</span></button>
+  </div>
+  <div class="day-panel active" id="panel-mon"><div class="day-header container"><div class="day-dot" style="background:#7c6aff;color:#7c6aff"></div><h2>Monday &#8212; DO1</h2><div class="day-meta"><strong>Sleep:</strong> 1:00 AM &#8594; 6:30 AM<br/><strong>Class:</strong> 8:00&#8211;11:40 &middot; Online 1:25&#8211;2:15 &middot; Gym 6:30&#8211;8:30 PM</div></div><div class="day-prog-wrap container"><div class="day-prog-track"><div class="day-prog-fill" id="daybar-mon" style="background:#7c6aff"></div></div><div class="day-prog-label" id="daylabel-mon">&#8211;</div></div><div class="schedule container" id="sched-mon"></div><div class="day-summary container" id="sum-mon"></div></div>
+  <div class="day-panel" id="panel-tue"><div class="day-header container"><div class="day-dot" style="background:#4ade80;color:#4ade80"></div><h2>Tuesday &#8212; DO2</h2><div class="day-meta"><strong>Sleep:</strong> 1:00 AM &#8594; 8:00 AM<br/><strong>Class:</strong> 9:45 AM&#8211;3:10 PM &middot; Gym 9:00&#8211;11:00 PM</div></div><div class="day-prog-wrap container"><div class="day-prog-track"><div class="day-prog-fill" id="daybar-tue" style="background:#4ade80"></div></div><div class="day-prog-label" id="daylabel-tue">&#8211;</div></div><div class="schedule container" id="sched-tue"></div><div class="day-summary container" id="sum-tue"></div></div>
+  <div class="day-panel" id="panel-wed"><div class="day-header container"><div class="day-dot" style="background:#facc15;color:#facc15"></div><h2>Wednesday &#8212; DO3</h2><div class="day-meta"><strong>Sleep:</strong> 1:00 AM &#8594; 6:30 AM<br/><strong>Class:</strong> 8:00&#8211;11:40 AM (DS cancelled) &middot; Gym 6:30&#8211;8:30 PM</div></div><div class="day-prog-wrap container"><div class="day-prog-track"><div class="day-prog-fill" id="daybar-wed" style="background:#facc15"></div></div><div class="day-prog-label" id="daylabel-wed">&#8211;</div></div><div class="schedule container" id="sched-wed"></div><div class="day-summary container" id="sum-wed"></div></div>
+  <div class="day-panel" id="panel-thu"><div class="day-header container"><div class="day-dot" style="background:#fb923c;color:#fb923c"></div><h2>Thursday &#8212; DO4</h2><div class="day-meta"><strong>Sleep:</strong> 1:00 AM &#8594; 8:30 AM<br/><strong>Class:</strong> 12:30&#8211;5:00 PM &middot; Gym 9:00&#8211;11:00 PM</div></div><div class="day-prog-wrap container"><div class="day-prog-track"><div class="day-prog-fill" id="daybar-thu" style="background:#fb923c"></div></div><div class="day-prog-label" id="daylabel-thu">&#8211;</div></div><div class="schedule container" id="sched-thu"></div><div class="day-summary container" id="sum-thu"></div></div>
+  <div class="day-panel" id="panel-fri"><div class="day-header container"><div class="day-dot" style="background:#f87171;color:#f87171"></div><h2>Friday &#8212; DO5</h2><div class="day-meta"><strong>Sleep:</strong> 1:00 AM &#8594; 8:00 AM<br/><strong>Class:</strong> 9:45&#8211;12:30 &amp; 3:10&#8211;6:10 PM &middot; Gym 9:00&#8211;11:00 PM</div></div><div class="day-prog-wrap container"><div class="day-prog-track"><div class="day-prog-fill" id="daybar-fri" style="background:#f87171"></div></div><div class="day-prog-label" id="daylabel-fri">&#8211;</div></div><div class="schedule container" id="sched-fri"></div><div class="day-summary container" id="sum-fri"></div></div>
+  <div class="day-panel" id="panel-sat"><div class="day-header container"><div class="day-dot" style="background:#c084fc;color:#c084fc"></div><h2>Saturday</h2><div class="day-meta"><strong>Sleep:</strong> 2:00 AM &#8594; 6:30 AM<br/><strong>Class:</strong> 8:00&#8211;12:00 PM &middot; Gym 10:30 PM&#8211;12:30 AM</div></div><div class="day-prog-wrap container"><div class="day-prog-track"><div class="day-prog-fill" id="daybar-sat" style="background:#c084fc"></div></div><div class="day-prog-label" id="daylabel-sat">&#8211;</div></div><div class="schedule container" id="sched-sat"></div><div class="day-summary container" id="sum-sat"></div></div>
+  <div class="day-panel" id="panel-sun"><div class="day-header container"><div class="day-dot" style="background:#a78bfa;color:#a78bfa"></div><h2>Sunday &#8212; Recovery &amp; Prep</h2><div class="day-meta"><strong>Sleep:</strong> 1:00 AM &#8594; 9:00 AM<br/><strong>No classes &middot; No gym</strong></div></div><div class="day-prog-wrap container"><div class="day-prog-track"><div class="day-prog-fill" id="daybar-sun" style="background:#a78bfa"></div></div><div class="day-prog-label" id="daylabel-sun">&#8211;</div></div><div class="schedule container" id="sched-sun"></div><div class="day-summary container" id="sum-sun"></div></div>
+  <div class="container prog-section"><div class="prog-title">&#128202; Weekly Focus Breakdown</div><div id="progRows"></div></div>
+  <div class="container opt-section"><h3>&#128161; Key Optimization Notes</h3><div class="tips-grid"><div class="tip-card" style="border-top:2px solid var(--dsa)"><h4>&#129329; <span style="color:var(--dsa)">DSA Strategy</span></h4><p>Morning DSA sessions leverage your freshest brain state. Evening for practice. Contest windows protected Wed/Sat/Sun.</p></div><div class="tip-card" style="border-top:2px solid var(--skill)"><h4>&#128187; <span style="color:var(--skill)">Skill Development</span></h4><p>Java/Skill Dev always after DSA or classes. Evening great for syntax, projects, tutorials.</p></div><div class="tip-card" style="border-top:2px solid var(--class)"><h4>&#127891; <span style="color:var(--class)">Class Days</span></h4><p>On heavy class days (Tue, Fri), productive sessions cut to 1&#8211;2 focused blocks max.</p></div><div class="tip-card" style="border-top:2px solid var(--read)"><h4>&#128214; <span style="color:var(--read)">Reading Window</span></h4><p>Always at 5:15&#8211;6:15 or 10:00&#8211;11:00 &#8212; transitional periods for light cognitive load.</p></div><div class="tip-card" style="border-top:2px solid var(--college)"><h4>&#128216; <span style="color:var(--college)">College Work</span></h4><p>Batched in 1-hour blocks. Sunday has a dedicated review to close weekly gaps.</p></div><div class="tip-card" style="border-top:2px solid var(--leisure)"><h4>&#127918; <span style="color:var(--leisure)">Protected Leisure</span></h4><p>Sat night and Sun evening are fully protected. Guilt-free downtime is non-negotiable.</p></div></div></div>
+  <div class="legend container"><div class="legend-item"><div class="legend-dot" style="background:var(--dsa)"></div>DSA</div><div class="legend-item"><div class="legend-dot" style="background:var(--skill)"></div>Skill Dev</div><div class="legend-item"><div class="legend-dot" style="background:var(--college)"></div>College Work</div><div class="legend-item"><div class="legend-dot" style="background:var(--read)"></div>Reading</div><div class="legend-item"><div class="legend-dot" style="background:var(--class)"></div>Classes</div><div class="legend-item"><div class="legend-dot" style="background:var(--gym)"></div>Gym</div><div class="legend-item"><div class="legend-dot" style="background:var(--leisure)"></div>Leisure</div><div class="legend-item"><div class="legend-dot" style="background:var(--nap)"></div>Recovery</div><div class="legend-item"><div class="legend-dot" style="background:var(--routine)"></div>Routine</div></div>
+</div>
+<div class="heatmap-view" id="view-heatmap">
+  <div class="container" style="padding-top:10px">
+    <div class="view-title">🔥 Productivity Heatmap</div>
+    <div class="view-sub">24-week contribution graph — every cell is one day. Gold = perfect 100%.</div>
+    <div class="hm-stats">
+      <div class="hm-stat"><div class="hm-stat-val" id="hmStatTracked">—</div><div class="hm-stat-label">Days Tracked</div></div>
+      <div class="hm-stat"><div class="hm-stat-val" id="hmStatPerfect">—</div><div class="hm-stat-label">Perfect Days ✨</div></div>
+      <div class="hm-stat"><div class="hm-stat-val" id="hmStatBest">—</div><div class="hm-stat-label">Best Streak</div></div>
+    </div>
+    <div class="hm-outer">
+      <div id="hmMonths" class="hm-months"></div>
+      <div class="hm-wrap">
+        <div id="hmDayLabels" class="hm-day-labels"></div>
+        <div id="hmGrid" class="hm-col" style="flex-direction:row;gap:3px;flex:1"></div>
+      </div>
+    </div>
+    <div class="hm-legend" style="margin-top:14px">
+      <span>Less</span>
+      <div class="hm-cell" data-lvl="0"></div>
+      <div class="hm-cell" data-lvl="1"></div>
+      <div class="hm-cell" data-lvl="2"></div>
+      <div class="hm-cell" data-lvl="3"></div>
+      <div class="hm-cell" data-lvl="4"></div>
+      <div class="hm-cell perfect"></div>
+      <span>More (✨=100%)</span>
+    </div>
+  </div>
+</div><div class="achievements-view" id="view-achievements">
+  <div class="container" style="padding-top:10px">
+    <div class="view-title">🏆 Achievements</div>
+    <div class="view-sub" id="achCounter">0 / 15 unlocked (0%)</div>
+    <div class="ach-progress-wrap">
+      <div class="ach-prog-track"><div class="ach-prog-fill" id="achProgressBar" style="width:0%"></div></div>
+    </div>
+    <div class="ach-grid" id="achGrid"></div>
+  </div>
+</div><div class="planner-view" id="view-planner">
+  <div class="container" style="padding-top:10px">
+    <div class="view-title">📋 Planner</div>
+    <div class="view-sub">Adaptive insights, What-If simulator, and semester overview.</div>
+
+    <div class="planner-section">
+      <h3>🔄 Adaptive Timetable</h3>
+      <div id="adaptiveContent"><div class="ada-empty">Loading…</div></div>
+    </div>
+
+    <div class="planner-section">
+      <h3>🔮 What-If Planner</h3>
+      <p style="font-size:.8rem;color:var(--muted);margin-bottom:16px">Drag the sliders to simulate schedule changes and see the impact instantly.</p>
+      <div id="wiSliders"></div>
+      <div class="wi-impact" id="wiImpact"></div>
+      <button class="wi-reset-btn" onclick="resetWhatIf()">↩️ Reset to Baseline</button>
+    </div>
+
+    <div class="planner-section">
+      <h3>📅 Semester Overview (Last 16 Weeks)</h3>
+      <p style="font-size:.78rem;color:var(--muted);margin-bottom:8px">Colour intensity = daily completion. Same scale as the Heatmap tab.</p>
+      <div class="sem-grid" id="semGrid"></div>
+      <div class="hm-legend" style="margin-top:10px">
+        <span>Less</span>
+        <div class="hm-cell" data-lvl="0"></div>
+        <div class="hm-cell" data-lvl="1"></div>
+        <div class="hm-cell" data-lvl="2"></div>
+        <div class="hm-cell" data-lvl="3"></div>
+        <div class="hm-cell" data-lvl="4"></div>
+        <span>More</span>
+      </div>
+    </div>
+  </div>
+</div><div class="assignments-view" id="view-assignments">
+  <div class="container" style="padding-top:10px">
+    <div class="view-title">📝 Assignments</div>
+    <div class="view-sub">Track deadlines, estimate time, and monitor progress.</div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:20px;margin-bottom:18px">
+      <h3 style="font-family:'Outfit',sans-serif;font-size:1rem;font-weight:700;margin-bottom:14px">➕ Add Assignment</h3>
+      <div class="asg-form">
+        <input id="asgTitle"   placeholder="Assignment title *" style="grid-column:1/-1"/>
+        <input id="asgSubject" placeholder="Subject / Course"/>
+        <input id="asgDue"     type="date"/>
+        <input id="asgHours"   type="number" placeholder="Est. hours" min="0.5" step="0.5"/>
+        <select id="asgPri">
+          <option value="high">🔴 High Priority</option>
+          <option value="medium" selected>🟡 Medium Priority</option>
+          <option value="low">🟢 Low Priority</option>
+        </select>
+        <button class="asg-add-btn" onclick="addAssignment()">+ Add Assignment</button>
+      </div>
+    </div>
+    <div class="asg-summary" id="asgSummary"></div>
+    <div id="asgList"></div>
+  </div>
+</div><div class="history-view" id="view-history"><div class="container" style="padding-top:10px"><h2>&#128200; Weekly History</h2><p>All your past completions stored permanently. Expand a week to see each day.</p><div id="historyList"></div></div></div>
+<div class="analytics-view" id="view-analytics"><div class="container" style="padding-top:10px"><h2 style="font-family:Outfit,sans-serif;font-size:1.4rem;font-weight:800;margin-bottom:6px">📈 Analytics</h2><p style="font-size:.82rem;color:var(--muted);margin-bottom:24px">Insights from your tracking data to help you improve week over week.</p><div class="ana-grid"><div class="ana-card"><h3>🔥 Streak &amp; Overview</h3><div class="ana-stat-row"><div class="ana-stat"><div class="ana-sv" id="anaStreak">—</div><div class="ana-sl">Current Streak</div></div><div class="ana-stat"><div class="ana-sv" id="anaPct">—</div><div class="ana-sl">This Week</div></div></div><p style="font-size:.78rem;color:var(--muted);margin-top:16px;line-height:1.5">Maintain ≥70% daily completion to keep your streak alive.</p></div><div class="ana-card" style="grid-column:1/-1"><h3>⚡ Energy Log — Last 4 Weeks</h3><div id="echart" style="gap:16px;min-height:100px"></div><p style="font-size:.72rem;color:var(--muted);margin-top:10px">Rate your energy each day using the ⚡ bolts in the schedule view.</p></div><div class="ana-card" style="grid-column:1/-1"><h3>❌ Why Tasks Were Missed</h3><div id="mchart"></div><p style="font-size:.72rem;color:var(--muted);margin-top:10px">Patterns here tell you what to fix. "Tired" often = sleep schedule.</p></div>    <div class="ana-card" style="grid-column:1/-1">
+      <h3>📈 Planned vs Actual (Focus Sessions)</h3>
+      <div id="pvaContent"><div class="pva-empty">Start a ⏱️ Focus Session on any task to track actual time here.</div></div>
+    </div></div></div></div>
+<div class="modal-overlay" id="timerModal" onclick="if(event.target===this)closeTimerModal()"><div class="modal-box" style="width:min(92vw,360px)"><div class="modal-title">⏱️ Focus Session</div><div class="tmr-name" id="tmrName">Task</div><div class="tmr-display" id="tmrDisplay">00:00</div><div class="tmr-dur-row"><button class="tm-dur-btn" onclick="startFocus(25,this)">25 min</button><button class="tm-dur-btn" onclick="startFocus(50,this)">50 min</button><button class="tm-dur-btn" onclick="startFocus(90,this)">90 min</button></div><div class="tmr-custom-row"><input id="tmrCustom" type="number" placeholder="Custom min" min="1" max="300"/><button class="tm-dur-btn" onclick="startCustomFocus()">▶ Start</button></div><div class="tmr-status" id="tmrStatus">Pick a duration and start.</div><button class="tmr-stop-btn" id="tmrStop" onclick="stopTimer()" disabled>⏹ Stop &amp; Log</button><button class="reason-skip" onclick="closeTimerModal()">✕ Close</button></div></div>
+<div class="ach-toast" id="achToast"></div>
+<div class="modal-overlay" id="reasonModal" onclick="if(event.target===this)closeReasonModal()"><div class="modal-box"><div class="modal-title">❌ Why did you miss this?</div><div class="modal-sub">This helps identify patterns over time.</div><div class="reason-grid"><button class="reason-btn" onclick="selectReason('tired')"><span>😴</span>Tired</button><button class="reason-btn" onclick="selectReason('busy')"><span>📚</span>Too Busy</button><button class="reason-btn" onclick="selectReason('forgot')"><span>🤔</span>Forgot</button><button class="reason-btn" onclick="selectReason('skipped')"><span>⏭️</span>Skipped it</button><button class="reason-btn" onclick="selectReason('other')"><span>✏️</span>Other</button><button class="reason-btn" onclick="closeReasonModal()" style="background:rgba(255,255,255,.04)"><span>🚫</span>Cancel</button></div><button class="reason-skip" onclick="skipReason()">↩️ Just unmark without logging</button></div></div>
+<div class="modal-overlay export-modal" id="exportModal" onclick="if(event.target===this)closeExportModal()"><div class="modal-box"><div id="exportCard"></div><div class="export-btns"><button class="export-btn primary" onclick="copyShareText()">📋 Copy as Text</button><button class="export-btn" onclick="printSummary()">🖨️ Print / Save PDF</button><button class="export-btn" onclick="closeExportModal()">✕ Close</button></div></div></div>
+<!-- PARTNER SHARE MODAL -->
+<div class="modal-overlay" id="partnerModal" onclick="if(event.target===this)closePartnerModal()">
+  <div class="modal-box" style="width:min(95vw,500px)">
+    <div class="modal-title">📱 Send to Study Partner</div>
+    <div class="modal-sub">Auto-generated weekly update — pick your platform and share!</div>
+    <div class="pm-tabs">
+      <button class="pm-tab wa" id="pm-tab-wa" onclick="pmSwitchTab('wa')">💬 WhatsApp</button>
+      <button class="pm-tab dc" id="pm-tab-dc" onclick="pmSwitchTab('dc')">🎮 Discord</button>
+    </div>
+    <div class="pm-pane" id="pm-pane-wa">
+      <div class="pm-preview" id="pm-wa-preview"></div>
+      <div class="pm-btns">
+        <a class="pm-btn wa-open" id="pm-wa-open" href="#" target="_blank" rel="noopener">📲 Open WhatsApp</a>
+        <button class="pm-btn wa-copy" id="pm-wa-copy" onclick="pmCopy('pm-wa-copy')">📋 Copy Text</button>
+      </div>
+      <div class="pm-tip">Opens WhatsApp Web with the message pre-filled.<br/>On mobile it opens the WhatsApp app directly.</div>
+    </div>
+    <div class="pm-pane" id="pm-pane-dc">
+      <div class="pm-preview" id="pm-dc-preview"></div>
+      <div class="pm-btns">
+        <button class="pm-btn dc-copy" id="pm-dc-copy" onclick="pmCopy('pm-dc-copy')">📋 Copy for Discord</button>
+        <button class="pm-btn dc-copy2" onclick="closePartnerModal()">✕ Close</button>
+      </div>
+      <div class="pm-tip">Copy and paste into any Discord channel or DM.<br/>Markdown formatting renders automatically.</div>
+    </div>
+  </div>
+</div>
+<div class="fab-group"><button class="fab" onclick="showExportModal()">📤 Export</button><button class="fab fab2" onclick="showPartnerModal()">📱 Study Partner</button></div>
+<div class="toast" id="toast"></div>
+<script src="app.js"></script><script src="features.js"></script><script src="timer.js"></script><script src="heatmap.js"></script><script src="achievements.js"></script><script src="planner.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+

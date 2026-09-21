@@ -25,16 +25,16 @@ const SCHEDULE_NORMAL = {
       { time:'4:45–5:00',  icon:'🍫', name:'Snacks',                           c:'routine', tag:'Meal'      },
       { time:'5:00–5:30',  icon:'🚿', name:'Bath',                             c:'routine', tag:'Routine'   },
       { time:'5:30–6:30',  icon:'📘', name:'College Work / Revision',          c:'college', tag:'College',  major:true },
-      { time:'6:30–8:30',  icon:'🏋️', name:'Gym — 2 Hours',                   c:'gym',     tag:'Gym',      major:true },
-      { time:'8:30–9:10',  icon:'🍽️', name:'Dinner',                           c:'routine', tag:'Meal'      },
-      { time:'9:10–9:30',  icon:'😴', name:'Rest',                             c:'break',   tag:'Rest'      },
-      { time:'9:30–10:30', icon:'🧩', name:'DSA — Practice',                   c:'dsa',     tag:'DSA',      major:true },
-      { time:'10:30–10:45',icon:'☕', name:'Break',                            c:'break',   tag:'Break'     },
-      { time:'10:45–11:30',icon:'📖', name:'Reading',                          c:'read',    tag:'Reading',  major:true },
-      { time:'11:30–12:30',icon:'🎮', name:'Leisure / Gaming / Friends',       c:'leisure', tag:'Leisure'   },
-      { time:'12:30–1:00', icon:'🌙', name:'Wind Down',                        c:'leisure', tag:'Wind Down' },
+      { time:'6:30–8:00',  icon:'🎮', name:'Leisure / Free Time',              c:'leisure', tag:'Leisure'   },
+      { time:'8:00–8:40',  icon:'🍽️', name:'Dinner',                           c:'routine', tag:'Meal'      },
+      { time:'8:40–9:00',  icon:'😴', name:'Rest',                             c:'break',   tag:'Rest'      },
+      { time:'9:00–10:00', icon:'🧩', name:'DSA — Practice',                   c:'dsa',     tag:'DSA',      major:true },
+      { time:'10:00–10:15',icon:'☕', name:'Break',                            c:'break',   tag:'Break'     },
+      { time:'10:15–11:00',icon:'📖', name:'Reading',                          c:'read',    tag:'Reading',  major:true },
+      { time:'11:00–12:15',icon:'🎮', name:'Leisure / Gaming / Friends',       c:'leisure', tag:'Leisure'   },
+      { time:'12:15–1:00', icon:'🌙', name:'Wind Down',                        c:'leisure', tag:'Wind Down' },
     ],
-    summary: { dsa:2, skill:1, college:1, read:0.75, leisure:1.5, gym:2 }
+    summary: { dsa:2, skill:1, college:1, read:0.75, leisure:3, gym:0 }
   },
 
   tue: {
@@ -51,12 +51,10 @@ const SCHEDULE_NORMAL = {
       { time:'7:05–8:00',  icon:'🎮', name:'Leisure / Decompress',             c:'leisure', tag:'Leisure'   },
       { time:'8:00–8:40',  icon:'🍽️', name:'Dinner',                           c:'routine', tag:'Meal'      },
       { time:'8:40–9:00',  icon:'☕', name:'Break',                            c:'break',   tag:'Break'     },
-      { time:'9:00–11:00', icon:'🏋️', name:'Gym — 2 Hours',                   c:'gym',     tag:'Gym',      major:true },
-      { time:'11:00–11:30',icon:'🚿', name:'Recovery / Freshen Up',            c:'routine', tag:'Routine'   },
-      { time:'11:30–12:15',icon:'🎮', name:'Leisure / Free Time',              c:'leisure', tag:'Leisure'   },
-      { time:'12:15–1:00', icon:'🌙', name:'Wind Down',                        c:'leisure', tag:'Wind Down' },
+      { time:'9:00–12:00', icon:'🎮', name:'Leisure / Free Time',              c:'leisure', tag:'Leisure'   },
+      { time:'12:00–1:00', icon:'🌙', name:'Wind Down',                        c:'leisure', tag:'Wind Down' },
     ],
-    summary: { dsa:0, skill:0, college:1, read:0, leisure:1.92, gym:2 }
+    summary: { dsa:0, skill:0, college:1, read:0, leisure:4, gym:0 }
   },
 
   wed: {
@@ -77,16 +75,16 @@ const SCHEDULE_NORMAL = {
       { time:'4:45–5:00',  icon:'🍫', name:'Snacks',                           c:'routine', tag:'Meal'      },
       { time:'5:00–5:30',  icon:'🚿', name:'Bath',                             c:'routine', tag:'Routine'   },
       { time:'5:30–6:30',  icon:'💻', name:'Skill Development — Java',         c:'skill',   tag:'Skill Dev',major:true },
-      { time:'6:30–8:30',  icon:'🏋️', name:'Gym — 2 Hours',                   c:'gym',     tag:'Gym',      major:true },
-      { time:'8:30–9:10',  icon:'🍽️', name:'Dinner',                           c:'routine', tag:'Meal'      },
-      { time:'9:10–9:30',  icon:'😴', name:'Rest',                             c:'break',   tag:'Rest'      },
-      { time:'9:30–10:30', icon:'🧩', name:'DSA — Hard Problems / Contest Prep', c:'dsa',  tag:'DSA',      major:true },
-      { time:'10:30–10:45',icon:'☕', name:'Break',                            c:'break',   tag:'Break'     },
-      { time:'10:45–11:30',icon:'📖', name:'Reading',                          c:'read',    tag:'Reading',  major:true },
-      { time:'11:30–12:30',icon:'🎮', name:'Leisure / Free Time',              c:'leisure', tag:'Leisure'   },
-      { time:'12:30–1:00', icon:'🌙', name:'Wind Down',                        c:'leisure', tag:'Wind Down' },
+      { time:'6:30–8:00',  icon:'🎮', name:'Leisure / Free Time',              c:'leisure', tag:'Leisure'   },
+      { time:'8:00–8:40',  icon:'🍽️', name:'Dinner',                           c:'routine', tag:'Meal'      },
+      { time:'8:40–9:00',  icon:'😴', name:'Rest',                             c:'break',   tag:'Rest'      },
+      { time:'9:00–10:00', icon:'🧩', name:'DSA — Hard Problems / Contest Prep', c:'dsa',  tag:'DSA',      major:true },
+      { time:'10:00–10:15',icon:'☕', name:'Break',                            c:'break',   tag:'Break'     },
+      { time:'10:15–11:00',icon:'📖', name:'Reading',                          c:'read',    tag:'Reading',  major:true },
+      { time:'11:00–12:15',icon:'🎮', name:'Leisure / Free Time',              c:'leisure', tag:'Leisure'   },
+      { time:'12:15–1:00', icon:'🌙', name:'Wind Down',                        c:'leisure', tag:'Wind Down' },
     ],
-    summary: { dsa:2, skill:2, college:1, read:0.75, leisure:1.5, gym:2 }
+    summary: { dsa:2, skill:2, college:1, read:0.75, leisure:3, gym:0 }
   },
 
   thu: {
@@ -106,12 +104,11 @@ const SCHEDULE_NORMAL = {
       { time:'7:05–8:00',  icon:'🎮', name:'Leisure / Decompress',             c:'leisure', tag:'Leisure'   },
       { time:'8:00–8:40',  icon:'🍽️', name:'Dinner',                           c:'routine', tag:'Meal'      },
       { time:'8:40–9:00',  icon:'☕', name:'Break',                            c:'break',   tag:'Break'     },
-      { time:'9:00–11:00', icon:'🏋️', name:'Gym — 2 Hours',                   c:'gym',     tag:'Gym',      major:true },
-      { time:'11:00–11:30',icon:'🚿', name:'Recovery / Freshen Up',            c:'routine', tag:'Routine'   },
-      { time:'11:30–12:15',icon:'📖', name:'Reading',                          c:'read',    tag:'Reading',  major:true },
+      { time:'9:00–9:45',  icon:'📖', name:'Reading',                          c:'read',    tag:'Reading',  major:true },
+      { time:'9:45–12:15', icon:'🎮', name:'Leisure / Free Time',              c:'leisure', tag:'Leisure'   },
       { time:'12:15–1:00', icon:'🌙', name:'Leisure / Wind Down',              c:'leisure', tag:'Wind Down' },
     ],
-    summary: { dsa:1.25, skill:1, college:1, read:0.75, leisure:1.75, gym:2 }
+    summary: { dsa:1.25, skill:1, college:1, read:0.75, leisure:3.5, gym:0 }
   },
 
   fri: {
@@ -132,12 +129,10 @@ const SCHEDULE_NORMAL = {
       { time:'7:15–8:00',  icon:'📘', name:'College Work / Revision',          c:'college', tag:'College',  major:true },
       { time:'8:00–8:40',  icon:'🍽️', name:'Dinner',                           c:'routine', tag:'Meal'      },
       { time:'8:40–9:00',  icon:'☕', name:'Break',                            c:'break',   tag:'Break'     },
-      { time:'9:00–11:00', icon:'🏋️', name:'Gym — 2 Hours',                   c:'gym',     tag:'Gym',      major:true },
-      { time:'11:00–11:30',icon:'🚿', name:'Recovery / Freshen Up',            c:'routine', tag:'Routine'   },
-      { time:'11:30–12:15',icon:'🎮', name:'Leisure / Free Time',              c:'leisure', tag:'Leisure'   },
-      { time:'12:15–1:00', icon:'🌙', name:'Wind Down',                        c:'leisure', tag:'Wind Down' },
+      { time:'9:00–12:00', icon:'🎮', name:'Leisure / Free Time',              c:'leisure', tag:'Leisure'   },
+      { time:'12:00–1:00', icon:'🌙', name:'Wind Down',                        c:'leisure', tag:'Wind Down' },
     ],
-    summary: { dsa:1, skill:0, college:0.75, read:0, leisure:1.25, gym:2 }
+    summary: { dsa:1, skill:0, college:0.75, read:0, leisure:4, gym:0 }
   },
 
   sat: {
@@ -161,10 +156,9 @@ const SCHEDULE_NORMAL = {
       { time:'8:00–8:40',  icon:'🍽️', name:'Dinner',                           c:'routine', tag:'Meal'      },
       { time:'8:40–9:00',  icon:'☕', name:'Break',                            c:'break',   tag:'Break'     },
       { time:'9:00–10:30', icon:'🧩', name:'DSA — Weekly Contest 🏆',           c:'dsa',     tag:'DSA',      major:true },
-      { time:'10:30–12:30',icon:'🏋️', name:'Gym — 2 Hours',                   c:'gym',     tag:'Gym',      major:true },
-      { time:'12:30–2:00', icon:'🎮', name:'Leisure — Gaming / Movie / Friends 🎉', c:'leisure', tag:'Leisure' },
+      { time:'10:30–2:00', icon:'🎮', name:'Leisure — Gaming / Movie / Friends 🎉', c:'leisure', tag:'Leisure' },
     ],
-    summary: { dsa:2.25, skill:1, college:1, read:0, leisure:2.5, gym:2 }
+    summary: { dsa:2.25, skill:1, college:1, read:0, leisure:4.5, gym:0 }
   },
 
   sun: {
@@ -215,15 +209,15 @@ const SCHEDULE_EXAM = {
       { time:'4:15–5:15',  icon:'📝', name:'College Exam Problems',            c:'college', tag:'Exam Study',major:true },
       { time:'5:15–5:30',  icon:'🚿', name:'Bath',                             c:'routine', tag:'Routine'   },
       { time:'5:30–6:30',  icon:'📘', name:'College Work / Revision',          c:'college', tag:'College',  major:true },
-      { time:'6:30–8:30',  icon:'🏋️', name:'Gym — 2 Hours',                   c:'gym',     tag:'Gym',      major:true },
-      { time:'8:30–9:10',  icon:'🍽️', name:'Dinner',                           c:'routine', tag:'Meal'      },
-      { time:'9:10–9:30',  icon:'😴', name:'Rest',                             c:'break',   tag:'Rest'      },
-      { time:'9:30–11:00', icon:'📚', name:'College Revision',                 c:'college', tag:'Exam Study',major:true },
-      { time:'11:00–11:45',icon:'🧩', name:'DSA — Maintenance',                c:'dsa',     tag:'DSA',      major:true },
-      { time:'11:45–12:30',icon:'🎮', name:'Leisure / Wind Down',              c:'leisure', tag:'Leisure'   },
-      { time:'12:30–1:00', icon:'🌙', name:'Free Time / Sleep Prep',           c:'leisure', tag:'Wind Down' },
+      { time:'6:30–8:00',  icon:'🎮', name:'Leisure / Free Time',              c:'leisure', tag:'Leisure'   },
+      { time:'8:00–8:40',  icon:'🍽️', name:'Dinner',                           c:'routine', tag:'Meal'      },
+      { time:'8:40–9:00',  icon:'😴', name:'Rest',                             c:'break',   tag:'Rest'      },
+      { time:'9:00–10:30', icon:'📚', name:'College Revision',                 c:'college', tag:'Exam Study',major:true },
+      { time:'10:30–11:15',icon:'🧩', name:'DSA — Maintenance',                c:'dsa',     tag:'DSA',      major:true },
+      { time:'11:15–12:15',icon:'🎮', name:'Leisure / Wind Down',              c:'leisure', tag:'Leisure'   },
+      { time:'12:15–1:00', icon:'🌙', name:'Free Time / Sleep Prep',           c:'leisure', tag:'Wind Down' },
     ],
-    summary: { dsa:0.75, skill:0, college:4.5, read:0, leisure:1, gym:2 }
+    summary: { dsa:0.75, skill:0, college:4.5, read:0, leisure:2.5, gym:0 }
   },
 
   tue: {
@@ -240,12 +234,11 @@ const SCHEDULE_EXAM = {
       { time:'7:05–8:00',  icon:'🎮', name:'Leisure / Decompress',             c:'leisure', tag:'Leisure'   },
       { time:'8:00–8:40',  icon:'🍽️', name:'Dinner',                           c:'routine', tag:'Meal'      },
       { time:'8:40–9:00',  icon:'☕', name:'Break',                            c:'break',   tag:'Break'     },
-      { time:'9:00–11:00', icon:'🏋️', name:'Gym — 2 Hours',                   c:'gym',     tag:'Gym',      major:true },
-      { time:'11:00–11:30',icon:'🚿', name:'Recovery / Freshen Up',            c:'routine', tag:'Routine'   },
-      { time:'11:30–12:15',icon:'📘', name:'College Revision',                 c:'college', tag:'Exam Study',major:true },
+      { time:'9:00–10:00', icon:'📘', name:'College Revision',                 c:'college', tag:'Exam Study',major:true },
+      { time:'10:00–12:15',icon:'🎮', name:'Leisure / Free Time',              c:'leisure', tag:'Leisure'   },
       { time:'12:15–1:00', icon:'🌙', name:'Leisure / Wind Down',              c:'leisure', tag:'Leisure'   },
     ],
-    summary: { dsa:0, skill:0, college:2, read:0, leisure:1.67, gym:2 }
+    summary: { dsa:0, skill:0, college:3, read:0, leisure:3.5, gym:0 }
   },
 
   wed: {
@@ -264,15 +257,15 @@ const SCHEDULE_EXAM = {
       { time:'4:45–5:00',  icon:'🍫', name:'Snacks',                           c:'routine', tag:'Meal'      },
       { time:'5:00–5:30',  icon:'🚿', name:'Bath',                             c:'routine', tag:'Routine'   },
       { time:'5:30–6:30',  icon:'📘', name:'College Work / Revision',          c:'college', tag:'College',  major:true },
-      { time:'6:30–8:30',  icon:'🏋️', name:'Gym — 2 Hours',                   c:'gym',     tag:'Gym',      major:true },
-      { time:'8:30–9:10',  icon:'🍽️', name:'Dinner',                           c:'routine', tag:'Meal'      },
-      { time:'9:10–9:30',  icon:'😴', name:'Rest',                             c:'break',   tag:'Rest'      },
-      { time:'9:30–11:00', icon:'📚', name:'College Revision',                 c:'college', tag:'Exam Study',major:true },
-      { time:'11:00–11:45',icon:'🧩', name:'DSA — Maintenance',                c:'dsa',     tag:'DSA',      major:true },
-      { time:'11:45–12:30',icon:'🎮', name:'Leisure / Free Time',              c:'leisure', tag:'Leisure'   },
-      { time:'12:30–1:00', icon:'🌙', name:'Wind Down',                        c:'leisure', tag:'Wind Down' },
+      { time:'6:30–8:00',  icon:'🎮', name:'Leisure / Free Time',              c:'leisure', tag:'Leisure'   },
+      { time:'8:00–8:40',  icon:'🍽️', name:'Dinner',                           c:'routine', tag:'Meal'      },
+      { time:'8:40–9:00',  icon:'😴', name:'Rest',                             c:'break',   tag:'Rest'      },
+      { time:'9:00–10:30', icon:'📚', name:'College Revision',                 c:'college', tag:'Exam Study',major:true },
+      { time:'10:30–11:15',icon:'🧩', name:'DSA — Maintenance',                c:'dsa',     tag:'DSA',      major:true },
+      { time:'11:15–12:15',icon:'🎮', name:'Leisure / Free Time',              c:'leisure', tag:'Leisure'   },
+      { time:'12:15–1:00', icon:'🌙', name:'Wind Down',                        c:'leisure', tag:'Wind Down' },
     ],
-    summary: { dsa:0.75, skill:0, college:5.25, read:0, leisure:1, gym:2 }
+    summary: { dsa:0.75, skill:0, college:5.25, read:0, leisure:2.5, gym:0 }
   },
 
   thu: {
@@ -292,12 +285,11 @@ const SCHEDULE_EXAM = {
       { time:'7:05–8:00',  icon:'🎮', name:'Leisure / Decompress',             c:'leisure', tag:'Leisure'   },
       { time:'8:00–8:40',  icon:'🍽️', name:'Dinner',                           c:'routine', tag:'Meal'      },
       { time:'8:40–9:00',  icon:'☕', name:'Break',                            c:'break',   tag:'Break'     },
-      { time:'9:00–11:00', icon:'🏋️', name:'Gym — 2 Hours',                   c:'gym',     tag:'Gym',      major:true },
-      { time:'11:00–11:30',icon:'🚿', name:'Recovery / Freshen Up',            c:'routine', tag:'Routine'   },
-      { time:'11:30–12:15',icon:'💻', name:'Skill Development — Maintenance',  c:'skill',   tag:'Skill Dev',major:true },
+      { time:'9:00–9:45',  icon:'💻', name:'Skill Development — Maintenance',  c:'skill',   tag:'Skill Dev',major:true },
+      { time:'9:45–12:15', icon:'🎮', name:'Leisure / Free Time',              c:'leisure', tag:'Leisure'   },
       { time:'12:15–1:00', icon:'🌙', name:'Leisure / Wind Down',              c:'leisure', tag:'Wind Down' },
     ],
-    summary: { dsa:0, skill:0.75, college:3.75, read:0, leisure:1.5, gym:2 }
+    summary: { dsa:0, skill:0.75, college:3.75, read:0, leisure:3.5, gym:0 }
   },
 
   fri: {
@@ -318,12 +310,11 @@ const SCHEDULE_EXAM = {
       { time:'7:15–8:00',  icon:'📘', name:'College Work / Revision',          c:'college', tag:'College',  major:true },
       { time:'8:00–8:40',  icon:'🍽️', name:'Dinner',                           c:'routine', tag:'Meal'      },
       { time:'8:40–9:00',  icon:'☕', name:'Break',                            c:'break',   tag:'Break'     },
-      { time:'9:00–11:00', icon:'🏋️', name:'Gym — 2 Hours',                   c:'gym',     tag:'Gym',      major:true },
-      { time:'11:00–11:30',icon:'🚿', name:'Recovery / Freshen Up',            c:'routine', tag:'Routine'   },
-      { time:'11:30–12:15',icon:'📘', name:'College Exam Revision',            c:'college', tag:'Exam Study',major:true },
+      { time:'9:00–10:15', icon:'📘', name:'College Exam Revision',            c:'college', tag:'Exam Study',major:true },
+      { time:'10:15–12:15',icon:'🎮', name:'Leisure / Free Time',              c:'leisure', tag:'Leisure'   },
       { time:'12:15–1:00', icon:'🌙', name:'Leisure / Wind Down',              c:'leisure', tag:'Leisure'   },
     ],
-    summary: { dsa:0, skill:0, college:3.5, read:0, leisure:0.75, gym:2 }
+    summary: { dsa:0, skill:0, college:4.5, read:0, leisure:3.5, gym:0 }
   },
 
   sat: {
@@ -341,14 +332,14 @@ const SCHEDULE_EXAM = {
       { time:'4:15–5:45',  icon:'📝', name:'College Exam Problems',            c:'college', tag:'Exam Study',major:true },
       { time:'5:45–6:00',  icon:'🍫', name:'Snacks',                           c:'routine', tag:'Meal'      },
       { time:'6:00–6:30',  icon:'🚿', name:'Bath',                             c:'routine', tag:'Routine'   },
-      { time:'6:30–8:30',  icon:'🏋️', name:'Gym — 2 Hours',                   c:'gym',     tag:'Gym',      major:true },
-      { time:'8:30–9:10',  icon:'🍽️', name:'Dinner',                           c:'routine', tag:'Meal'      },
-      { time:'9:10–9:30',  icon:'😴', name:'Rest',                             c:'break',   tag:'Rest'      },
-      { time:'9:30–11:00', icon:'📚', name:'College Revision',                 c:'college', tag:'Exam Study',major:true },
-      { time:'11:00–11:45',icon:'🧩', name:'DSA — Maintenance',                c:'dsa',     tag:'DSA',      major:true },
-      { time:'11:45–2:00', icon:'🎮', name:'Leisure — Gaming / Movie / Friends 🎉', c:'leisure', tag:'Leisure' },
+      { time:'6:30–8:00',  icon:'🎮', name:'Leisure / Free Time',              c:'leisure', tag:'Leisure'   },
+      { time:'8:00–8:40',  icon:'🍽️', name:'Dinner',                           c:'routine', tag:'Meal'      },
+      { time:'8:40–9:00',  icon:'😴', name:'Rest',                             c:'break',   tag:'Rest'      },
+      { time:'9:00–10:30', icon:'📚', name:'College Revision',                 c:'college', tag:'Exam Study',major:true },
+      { time:'10:30–11:15',icon:'🧩', name:'DSA — Maintenance',                c:'dsa',     tag:'DSA',      major:true },
+      { time:'11:15–2:00', icon:'🎮', name:'Leisure — Gaming / Movie / Friends 🎉', c:'leisure', tag:'Leisure' },
     ],
-    summary: { dsa:0.75, skill:0, college:4.5, read:0, leisure:2.25, gym:2 }
+    summary: { dsa:0.75, skill:0, college:4.5, read:0, leisure:4.5, gym:0 }
   },
 
   sun: {

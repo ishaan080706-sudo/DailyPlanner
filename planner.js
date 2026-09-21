@@ -5,9 +5,9 @@ const ASSIGN_KEY = 'tt_assignments_v1';
 let _examMode   = false;
 
 // Normal-mode baseline hours (computed from schedule summaries)
-const BASE_HOURS_NORMAL = {dsa:11, skill:9, college:7, read:2.25, gym:12, leisure:11.75};
+const BASE_HOURS_NORMAL = {dsa:11, skill:9, college:7, read:2.25, leisure:11.75};
 // Exam-mode baseline hours
-const BASE_HOURS_EXAM   = {dsa:3,  skill:1.5, college:25, read:0, gym:12, leisure:8.25};
+const BASE_HOURS_EXAM   = {dsa:3,  skill:1.5, college:25, read:0, leisure:8.25};
 
 let BASE_HOURS     = {...BASE_HOURS_NORMAL};
 let _whatIfState   = {...BASE_HOURS_NORMAL};
